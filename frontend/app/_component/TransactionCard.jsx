@@ -1,11 +1,13 @@
 'use client'
-import { useState } from "react";
-import { Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Edit, Edit2, Trash2 } from "lucide-react";
+import React, { useState } from "react";
+import DeleteDialog from "./DeleteDialog";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { ContextMenuItem } from "@radix-ui/react-context-menu";
 import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import DeleteDialog from "./DeleteDialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import DialogComp from "./DialogComp";
 import EditDialog from "./EditDialog";
 
 // Category color mapping
@@ -19,48 +21,46 @@ const categoryColors = {
 };
 
 function TransactionCard({ data }) {
-   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-   const [transaction, setTransaction] = useState({
-      name: data.name,
-      amount: data.amount,
-      date: data.date.split("T")[0], // Extract only YYYY-MM-DD
-      category: data.category,
-      id:data._id
-   });
+   // Destructure fields from data
+   const { name, date, category, amount } = data;
 
    return (
       <ContextMenu>
          <ContextMenuTrigger className="relative grid grid-cols-3 items-center bg-white border border-gray-300 shadow-md rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:border-gray-400 w-full gap-4">
-            <ContextMenuContent className="w-32">
-               <ContextMenuItem className="p-2 flex w-full justify-between" onSelect={() => setIsEditDialogOpen(true)}>
-                  Edit <Edit />
-               </ContextMenuItem>
+            <ContextMenuContent className="w-32 ">
+
+                  <Dialog>
+                     <DialogTrigger className="w-full p-2 flex justify-between">
+                        Edit <Edit />
+                     </DialogTrigger>
+                     <DialogContent>
+                        <EditDialog data={data} />
+                     </DialogContent>
+                  </Dialog>
+
                <Separator />
-               <ContextMenuItem className="p-2">Forward</ContextMenuItem>
             </ContextMenuContent>
-
-            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-               <DialogContent>
-                  <EditDialog
-                     transaction={transaction}
-                     setTransaction={setTransaction}
-                     closeDialog={() => setIsEditDialogOpen(false)}
-                  />
-               </DialogContent>
-            </Dialog>
-
             <div className="flex flex-col space-y-1">
-               <h3 className="text-lg font-semibold text-gray-900">{transaction.name}</h3>
-               <p className="text-sm text-gray-500">{transaction.date}</p>
-            </div>
+               <h3
+                  className="text-lg font-semibold text-gray-900 cursor-pointer"
+                  onClick={() => setEditingField("name")}
+               >
+                  {name}
+               </h3>
 
+               <p
+                  className="text-sm text-gray-500 cursor-pointer"
+                  onClick={() => setEditingField("date")}
+               >
+                  {date.split("T")[0]}
+               </p>
+            </div>
             <div>
                <select
                   name="category"
-                  value={transaction.category}
-                  onChange={(e) => setTransaction({ ...transaction, category: e.target.value })}
-                  className={`px-3 py-1 text-xs font-semibold rounded-full border ${categoryColors[transaction.category] || categoryColors.Other
-                     } w-full`}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full border ${categoryColors[category] || categoryColors.Other} w-full`}
                >
                   {Object.keys(categoryColors).map((cat) => (
                      <option key={cat} value={cat}>
@@ -72,7 +72,13 @@ function TransactionCard({ data }) {
 
             <div className="text-right">
                <div className="flex h-16 items-center align-middle">
-                  <h2 className="text-xl font-bold text-gray-800">₹ {Number(transaction.amount).toLocaleString()}</h2>
+                  <h2
+                     className="text-xl font-bold text-gray-800 cursor-pointer"
+                     onClick={() => setEditingField("amount")}
+                  >
+                     ₹ {Number(amount).toLocaleString()}
+                  </h2>
+                  {/* <Button variant="outline" ><Trash2 /></Button> */}
                   <DeleteDialog id={data._id} />
                </div>
             </div>

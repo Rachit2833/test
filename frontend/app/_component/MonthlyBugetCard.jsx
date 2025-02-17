@@ -5,12 +5,11 @@ import { Button } from "@/components/ui/button"; // Importing a shadcn/ui button
 import BudgetDialog from "./BugetDialog";
 
 function MonthlyBudgetCard({ data, trxData }) {
-   console.log(trxData, "Transaction Data");
 
-   const [budget, setBudget] = useState(data.totalBudget);
+   const [budget, setBudget] = useState(data?.totalBudget);
 
    // Calculate total expenditure from trxData
-   const totalExpenditure = trxData.transactions.reduce((acc, tx) => acc + tx.amount, 0);
+   const totalExpenditure = trxData?.transactions?.reduce((acc, tx) => acc + tx?.amount, 0);
    const remainingAmount = budget - totalExpenditure;
 
    const handleChangeBudget = () => {
@@ -44,7 +43,7 @@ function MonthlyBudgetCard({ data, trxData }) {
          <div className="flex flex-col mt-5 w-full">
             <h2 className="text-lg font-semibold text-gray-700 mx-2">Category-wise Budget</h2>
 
-            {data.categories.map((i, index) => (
+            {data?.categories.map((i, index) => (
                <div key={index} className="flex justify-between border-b py-2 mx-2">
                   <span className="text-gray-600">{i.name}</span>
                   <span className="font-medium text-black">₹{i.amount.toLocaleString()}</span>

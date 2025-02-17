@@ -10,9 +10,6 @@ export async function addTransaction(formData) {
       dataObject[key] = value;
     }
     dataObject["userID"] = "65b3e1d2c5a4e6a2b3c9d2e2";
-
-    console.log(dataObject);
-
     const response = await fetch("https://test-mmpf.onrender.com/transactions", {
       method: "POST",
       headers: {

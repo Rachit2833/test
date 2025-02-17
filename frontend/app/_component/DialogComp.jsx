@@ -4,26 +4,37 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormStatus } from "react-dom";
+import { useState } from "react";
 import { addTransaction } from "../_lib/action";
 
 function DialogComp() {
+   const [isOpen, setIsOpen] = useState(false);
+
+   const openDialog = () => setIsOpen(true);
+   const closeDialog = () => setIsOpen(false);
+
    return (
-      <Dialog>
-         <DialogTrigger className="bg-primary h-9 px-4 py-2 text-primary-foreground shadow hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0">
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+         <DialogTrigger onClick={openDialog} className="bg-primary h-9 px-4 py-2 text-primary-foreground shadow hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0">
             Add
          </DialogTrigger>
          <DialogContent>
             <DialogHeader>
-               <DialogTitle>Add a new Transction</DialogTitle>
+               <DialogTitle>Add a new Transaction</DialogTitle>
             </DialogHeader>
-            <form action={addTransaction} className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+            <form
+               action={async (formData) => {
+                  await addTransaction(formData); // Wait for the async operation to finish
+                  closeDialog(); // Only close the dialog after the transaction is added
+               }}
+             className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
                <div className="w-full col-span-3">
                   <Label htmlFor="date">Date</Label>
                   <Input type="date" name="date" id="date" className="w-full" />
                </div>
                <div className="w-full col-span-3">
-                  <Label htmlFor="date">Name</Label>
-                  <Input type="text" name="name" id="date" className="w-full" />
+                  <Label htmlFor="name">Name</Label>
+                  <Input type="text" name="name" id="name" className="w-full" />
                </div>
                <div className="w-full col-span-3">
                   <Label htmlFor="category">Category</Label>
@@ -43,22 +54,20 @@ function DialogComp() {
                   <Label htmlFor="amount">Amount</Label>
                   <Input type="number" name="amount" id="amount" placeholder="₹ Amount" className="w-full" />
                </div>
-               <SaveButton />
+               <SaveButton  />
             </form>
-
-
          </DialogContent>
       </Dialog>
    )
 }
 
-export default DialogComp
+export default DialogComp;
+
 export function SaveButton() {
    const status = useFormStatus();
    return (
-      <Button className=" col-span-3" disabled={status.pending} type="submit">
-         {status.pending ? <span className="animate-spin  inline-block w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full"></span> : <span>Add</span>}
-         {/* <span> Save</span> */}
+      <Button className="col-span-3" disabled={status.pending} type="submit" >
+         {status.pending ? <span className="animate-spin inline-block w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full"></span> : <span>Add</span>}
       </Button>
    )
 }
