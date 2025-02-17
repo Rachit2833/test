@@ -12,11 +12,11 @@ import BudgetWrapper from "./BudgetWrapper";
 import PieChartWrapper from "./PieChartWrapper";
 
 async function DashboardWrapper() {
-   const res = await fetch("http://localhost:2833/monthly-expense/65b3e1d2c5a4e6a2b3c9d2e2")
+   const res = await fetch("https://test-mmpf.onrender.com/monthly-expense/65b3e1d2c5a4e6a2b3c9d2e2")
    const data = await res.json()
-   const res2 = await fetch("http://localhost:2833/bud/65b3e1d2c5a4e6a2b3c9d2e2")
+   const res2 = await fetch("https://test-mmpf.onrender.com/bud/65b3e1d2c5a4e6a2b3c9d2e2")
    const data2 = await res2.json()
-   const res3 = await fetch("http://localhost:2833/analytics/65b3e1d2c5a4e6a2b3c9d2e2")
+   const res3 = await fetch("https://test-mmpf.onrender.com/analytics/65b3e1d2c5a4e6a2b3c9d2e2")
    const data3 = await res3.json()
    
    return (
