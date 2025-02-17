@@ -13,7 +13,7 @@ export async function addTransaction(formData) {
 
     console.log(dataObject);
 
-    const response = await fetch("http://localhost:2833/transactions", {
+    const response = await fetch("https://test-mmpf.onrender.com/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export async function addTransaction(formData) {
 export async function deleteTransction(transactionId) {
   try {
     const data = await fetch(
-      `http://localhost:2833/transaction/${transactionId}`,
+      `https://test-mmpf.onrender.com/transaction/${transactionId}`,
       {
         method: "DELETE",
         headers: {
@@ -52,7 +52,7 @@ export async function updateTransaction(formData, id) {
         // Convert FormData to a plain object
         const dataObject = Object.fromEntries(formData.entries());
 
-        const response = await fetch(`http://localhost:2833/transactions/${id}`, {
+        const response = await fetch(`https://test-mmpf.onrender.com/transactions/${id}`, {
             method: "PATCH",
             body: JSON.stringify(dataObject),
             headers: {

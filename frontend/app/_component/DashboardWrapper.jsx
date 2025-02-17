@@ -9,13 +9,13 @@ import TransactionWrapper from "./TransactionWrapper";
 
 async function DashboardWrapper() {
    // Fetch the data for the different sections of the dashboard
-   const monthlyExpenseResponse = await fetch("http://localhost:2833/monthly-expense/65b3e1d2c5a4e6a2b3c9d2e2");
+   const monthlyExpenseResponse = await fetch("https://test-mmpf.onrender.com/monthly-expense/65b3e1d2c5a4e6a2b3c9d2e2");
    const monthlyExpenseData = await monthlyExpenseResponse.json();
 
-   const budgetResponse = await fetch("http://localhost:2833/bud/65b3e1d2c5a4e6a2b3c9d2e2");
+   const budgetResponse = await fetch("https://test-mmpf.onrender.com/bud/65b3e1d2c5a4e6a2b3c9d2e2");
    const budgetData = await budgetResponse.json();
 
-   const analyticsResponse = await fetch("http://localhost:2833/analytics/65b3e1d2c5a4e6a2b3c9d2e2");
+   const analyticsResponse = await fetch("https://test-mmpf.onrender.com/analytics/65b3e1d2c5a4e6a2b3c9d2e2");
    const analyticsData = await analyticsResponse.json();
 
    const currentDate = new Date();
@@ -23,7 +23,7 @@ async function DashboardWrapper() {
    const currentMonth = currentDate.getMonth() + 1; // months are zero-indexed
 
    const transactionsResponse = await fetch(
-      `http://localhost:2833/transactions/65b3e1d2c5a4e6a2b3c9d2e2/${currentYear}/${currentMonth}`
+      `https://test-mmpf.onrender.com/transactions/65b3e1d2c5a4e6a2b3c9d2e2/${currentYear}/${currentMonth}`
    );
    const transactionsData = await transactionsResponse.json();
 
